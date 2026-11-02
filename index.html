@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Unit 4 Learning Website: Statistical Methods and Chance</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap">
+<style>
+:root{--bg:#EEF4FF;--card:#fff;--ink:#1B2A4A;--soft:#5A6A8C;--line:#D9E3F5;--coral:#FF5C6C;--sun:#FFC93C;--mint:#1FAF6E;--vio:#6C5CE7;--mintbg:#E3F8EE;--coralbg:#FFE8EA;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#101A33;--card:#1A2850;--ink:#F1F5FF;--soft:#A9B7DB;--line:#2D3E6E;--mintbg:#12382E;--coralbg:#43212B}}
+:root[data-theme="dark"]{--bg:#101A33;--card:#1A2850;--ink:#F1F5FF;--soft:#A9B7DB;--line:#2D3E6E;--mintbg:#12382E;--coralbg:#43212B}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Fredoka","Trebuchet MS",system-ui,sans-serif;font-size:19px;line-height:1.45}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--vio);z-index:10}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--vio);color:#fff;padding:10px 14px}
+.bar{max-width:680px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:8px}
+h1{font-size:23px;margin:0}
+.pill{background:var(--sun);color:#1B2A4A;font-weight:700;border-radius:99px;padding:4px 14px}
+main{max-width:680px;margin:auto;padding:14px}
+.card{background:var(--card);border:2px solid var(--line);border-radius:24px;padding:18px;margin-bottom:14px}
+h2{margin:0 0 8px;font-size:26px}
+label{display:block;font-weight:600;margin:12px 0 4px}
+input,textarea{width:100%;font:inherit;font-size:20px;padding:12px;border-radius:14px;border:2px solid var(--line);background:var(--bg);color:var(--ink)}
+textarea{min-height:110px}
+input:focus,textarea:focus,button:focus-visible{outline:4px solid var(--sun);outline-offset:2px}
+.btn{display:block;width:100%;font:inherit;font-weight:700;font-size:21px;padding:14px;border:0;border-radius:18px;background:var(--mint);color:#fff;cursor:pointer;margin-top:12px;min-height:56px}
+.btn.alt{background:var(--vio)}.btn.ghost{background:var(--line);color:var(--ink)}
+.btn:active,.opt:active{transform:scale(.96)}
+.err{color:var(--coral);font-weight:600;min-height:1.4em;margin-top:6px}
+.meter{height:16px;background:var(--line);border-radius:9px;overflow:hidden;margin:6px 0 12px}
+.meter i{display:block;height:100%;background:var(--mint);transition:width .4s}
+.small{color:var(--soft);font-size:17px}
+.qt{font-size:23px;font-weight:500;margin:6px 0 10px}
+.vis{background:var(--bg);border-radius:16px;padding:10px;margin:8px 0;text-align:center;overflow-x:auto}
+.big{font-size:36px}
+.opts{display:grid;gap:10px;margin-top:8px}
+.opt{font:inherit;font-weight:600;font-size:21px;text-align:left;padding:14px 16px;border-radius:18px;border:3px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer;min-height:58px}
+.opt:nth-child(1){border-color:#6C5CE7}.opt:nth-child(2){border-color:#FF9F1C}.opt:nth-child(3){border-color:#1FAF6E}.opt:nth-child(4){border-color:#FF5C6C}
+.opt.right{background:var(--mintbg);border-color:var(--mint)}.opt.wrong{background:var(--coralbg);border-color:var(--coral)}
+.fb{padding:12px;border-radius:16px;margin-top:12px;font-size:18px}
+.fb.good{background:var(--mintbg);border:2px solid var(--mint)}.fb.bad{background:var(--coralbg);border:2px solid var(--coral)}
+.say{font:inherit;font-weight:600;background:var(--sun);color:#1B2A4A;border:0;border-radius:99px;padding:6px 14px;cursor:pointer}
+i.k{display:inline-block;width:4px;height:26px;background:var(--ink);margin:0 3px;border-radius:2px}
+.g{position:relative;display:inline-block;margin-right:12px}
+.g::after{content:"";position:absolute;left:-3px;right:-3px;top:11px;height:4px;background:var(--coral);transform:rotate(-18deg);border-radius:2px}
+.conf{position:fixed;top:-30px;font-size:28px;pointer-events:none;animation:fall 1.6s linear forwards;z-index:20}
+@keyframes fall{to{transform:translateY(105vh) rotate(360deg);opacity:.7}}
+@media (prefers-reduced-motion:reduce){.conf{display:none}}
+.code{font-family:ui-monospace,Menlo,monospace;font-size:14px;word-break:break-all;min-height:90px}
+.trophy{font-size:64px;text-align:center}
+.sc{text-align:center;font-size:30px;font-weight:700}
+.row{display:flex;align-items:center;gap:8px;margin:6px 0}.row b{width:42%;font-size:18px}
+.row .meter{flex:1;margin:0}.row span{width:56px;text-align:right;font-size:18px}
+.tagw{display:inline-block;background:var(--coral);color:#fff;border-radius:99px;padding:1px 10px;font-size:14px}
+.tagg{background:var(--mint)}
+.mist{border-left:8px solid var(--coral)}
+.mist p{margin:6px 0}
+.ans{display:inline-block;padding:2px 10px;border-radius:10px;font-weight:600}
+.ans.w{background:var(--coralbg)}.ans.r{background:var(--mintbg)}
+nav{max-width:680px;margin:8px auto 0;display:flex;gap:6px}nav button{flex:1;font:inherit;font-weight:600;font-size:16px;padding:9px 2px;border:0;border-radius:14px;background:rgba(255,255,255,.22);color:#fff;cursor:pointer}nav button.on{background:#fff;color:var(--vio)}
+.les li{list-style:none;margin:8px 0;padding:10px 12px;border-radius:14px;background:var(--bg);cursor:pointer;font-size:21px}
+.les li.hl{background:var(--sun);color:#1B2A4A}.les ul{padding:0;margin:10px 0}
+.dots{text-align:center;font-size:22px;letter-spacing:4px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}.chip{font:inherit;font-weight:600;font-size:17px;padding:7px 14px;border-radius:99px;border:2px solid var(--vio);background:var(--card);color:var(--ink);cursor:pointer}.chip.on{background:var(--vio);color:#fff}
+.two{display:flex;gap:10px}.two .btn{margin-top:8px}
+table.c{margin:auto;border-collapse:collapse}table.c td,table.c th{border:3px solid var(--soft);padding:10px 14px;font-size:22px;font-weight:600}table.c td{font-size:32px;text-align:center}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<header><div class="bar"><h1>📊 Unit 4 Fun Zone</h1><span class="pill" id="st">⭐ 0</span></div><nav id="nv"><button data-s="study" class="on">📖 Study</button><button data-s="review">🔁 Review</button><button data-s="start">📝 Quiz</button><button data-s="parent">👨‍👩‍👧 Parents</button></nav></header>
+<main>
+
+<section id="study"></section>
+<section id="review" hidden><div class="card"><h2>🔁 Review time</h2><p>Think first. Then tap to see the answer.</p><div class="chips" id="rc"></div></div><div id="rl"></div></section>
+<section id="start" class="card" hidden>
+ <div class="trophy">🦩🎉</div>
+ <h2>Hello, little star!</h2>
+ <p>Let us practise charts, tally marks and shapes. Tell me about you first.</p>
+ <label for="nm">Your name 😊</label><input id="nm" autocomplete="given-name" maxlength="30">
+ <label for="em">Your email (ask a grown-up) 📧</label><input id="em" type="email" autocomplete="email" maxlength="60">
+ <div class="err" id="serr" role="alert"></div>
+ <button class="btn" id="go">🚀 Start the quiz</button>
+ <button class="btn alt" id="pd">👨‍👩‍👧 Parents dashboard</button>
+</section>
+
+<section id="quiz" hidden></section>
+
+<section id="done" hidden>
+ <div class="card">
+  <div class="trophy" id="tr"></div>
+  <div class="sc" id="sc"></div>
+  <div class="sc" id="sst"></div>
+  <p class="sc" style="font-size:20px" id="bdg"></p>
+  <p><b>Your result code</b><br><span class="small">Copy it and give it to your parents. They paste it in the Parents dashboard.</span></p>
+  <textarea class="code" id="code" readonly></textarea>
+  <button class="btn" id="cp">📋 Copy Code</button>
+  <button class="btn ghost" id="again">🔁 Play again</button>
+ </div>
+</section>
+
+<section id="parent" hidden>
+ <div class="card">
+  <h2>👨‍👩‍👧 Parents dashboard</h2>
+  <p class="small">Parent login: paste your child’s result code below to see the mistakes, weak points and how to help.</p>
+  <textarea class="code" id="pcode" placeholder="Paste the code that starts with U4-"></textarea>
+  <div class="err" id="perr" role="alert"></div>
+  <button class="btn alt" id="open">🔓 Open dashboard</button>
+  <button class="btn ghost" id="back">⬅ Back to the quiz</button>
+ </div>
+ <div id="report"></div>
+</section>
+</main>
+<script>
+const $=s=>document.querySelector(s);
+const tally=n=>{let s='';for(let i=0;i<Math.floor(n/5);i++)s+='<span class="g">'+'<i class="k"></i>'.repeat(4)+'</span>';return s+'<i class="k"></i>'.repeat(n%5)};
+const venn2=x=>`<svg viewBox="0 0 360 205" width="100%" style="max-width:380px" role="img" aria-label="Venn diagram with two overlapping circles: Can fly and Lives in the wild"><circle cx="130" cy="125" r="70" fill="#6C5CE7" fill-opacity=".25" stroke="#6C5CE7" stroke-width="4"/><circle cx="230" cy="125" r="70" fill="#FFC93C" fill-opacity=".4" stroke="#E0A800" stroke-width="4"/><g font-size="22" font-weight="700" fill="currentColor" text-anchor="middle" font-family="Fredoka,Trebuchet MS,sans-serif"><text x="95" y="28">Can fly</text><text x="265" y="28">Lives in the wild</text></g>${x}</svg>`;
+const TOP=["Venn and Carroll diagrams","Tally charts","Pictograms and bar charts","2D shapes"];
+const TIP=["Draw two overlapping circles on paper. Sort toys or animals together (for example: can fly, lives in the wild). Things in BOTH groups go in the middle.","Make a tally chart at home, such as the colours of cars you see. Remember: 4 lines, then a line across for 5. Count in 5s.","Draw a simple pictogram with a key, like 🏅 = 2. Ask: how many pictures? Then multiply by the key.","Go on a shape hunt. Count the sides and look for square corners (right angles) on books, doors and windows."];
+const medals=n=>'🏅'.repeat(n);
+const Q=[
+{t:"tf",tp:0,q:"A Venn diagram uses overlapping circles.",a:1,why:"Yes! In a Venn diagram the circles overlap. The middle part is for things that fit both groups.",help:"Draw two overlapping circles and ask your child where a thing that fits both groups should go."},
+{t:"tf",tp:0,q:"A Carroll diagram has circles that overlap.",a:0,why:"No. A Carroll diagram is a grid of boxes, like a table. Venn diagrams are the ones with circles.",help:"Show the difference: draw a 2 by 2 grid (Carroll) and two overlapping circles (Venn). Sort the same toys both ways."},
+{t:"mc",tp:0,q:"A parrot can fly AND lives in the wild. Where does it go in a Venn diagram?",v:`${venn2("")}`,o:["In the middle","Only in “Can fly”","Outside the circles"],a:0,why:"The parrot fits BOTH circles, so it goes in the middle where they overlap.",help:"Ask your child to find other things that belong in the middle, such as a butterfly."},
+{t:"mc",tp:0,q:"Which animal lives in the wild and cannot fly?",o:["🐯 Tiger","🐦 Robin","🐑 Sheep"],a:0,why:"A tiger lives in the wild and cannot fly. A robin can fly. A sheep lives on a farm.",help:"Play 'Can it fly? Does it live in the wild?' with animal names and sort them in a grid."},
+{t:"fb",tp:0,q:"A ______ diagram is a grid of boxes. (Venn or Carroll)",acc:["carroll"],a:"Carroll",why:"A Carroll diagram is a grid of boxes. Remember: Carroll = boxes.",help:"Draw a Carroll grid together and sort shapes by 'has 4 sides' and 'does not have 4 sides'."},
+{t:"mc",tp:1,q:"How many is this tally?",v:`<div>${tally(8)}</div>`,o:["8","7","13"],a:0,why:"One group of 5 plus 3 more marks makes 8. Count in 5s: 5, then 6, 7, 8.",help:"Practise counting tally marks in 5s using a printed or hand-drawn tally."},
+{t:"fb",tp:2,q:"In this pictogram the key says 🏅 = 2. How many medals is this?",v:`<div class="big">${medals(4)}</div>`,acc:["8","eight"],a:"8",why:"There are 4 pictures and each is worth 2. So 2 + 2 + 2 + 2 = 8.",help:"Always read the key first! Make your own pictogram and count in 2s."},
+{t:"mc",tp:2,q:"The yellow team won 6 gold, 8 silver and 3 bronze medals. Which medal did they win MOST?",o:["Silver (2nd place)","Gold (1st place)","Bronze (3rd place)"],a:0,why:"8 is the biggest number, so silver (2nd place) is the most.",help:"Write the numbers on paper and circle the biggest one. Ask 'which is least?' too."},
+{t:"fb",tp:2,q:"6 gold medals and 3 bronze medals. How many MORE gold than bronze?",acc:["3","three"],a:"3",why:"More means take away: 6 − 3 = 3.",help:"Practise 'how many more' with two rows of objects. Line them up and count the extras."},
+{t:"fb",tp:2,q:"6 gold + 8 silver + 3 bronze. How many medals altogether?",acc:["17","seventeen"],a:"17",why:"6 + 8 = 14, and 14 + 3 = 17.",help:"Add in steps: first two numbers, then the third. Use counters or coins."},
+{t:"tf",tp:1,q:"7 children chose a flamingo and 3 chose a duck. More children chose a duck.",v:`<div>🦩 ${tally(7)}</div><div>🦆 ${tally(3)}</div>`,a:0,why:"No! The flamingo has 7 and the duck has only 3. 7 is more than 3.",help:"Make a mini tally chart with family favourites and ask 'which is most popular?'"},
+{t:"mc",tp:3,q:"Which 2D shape has 4 sides and a right angle?",o:["🟥 Square","🔺 Triangle","⬡ Hexagon"],a:0,why:"A square has 4 sides and 4 right angles. A triangle has 3 sides. A hexagon has 6 sides.",help:"Use the corner of a piece of paper to check for right angles around the house."}
+];
+const CAUSE=["Mixed up the names Venn and Carroll, or forgot that Venn circles overlap.","Confused Carroll with Venn. Carroll diagrams use boxes, not circles.","Did not notice the parrot fits BOTH labels, so chose only one circle.","Picked an animal that fits only one label. Check both: lives in the wild AND cannot fly.","Mixed up the two diagram names. Remember: Carroll = boxes.","Counted every mark as 1 instead of counting the group of 5 first, or miscounted the extra marks.","Forgot to read the key. Counted 4 pictures instead of 4 × 2.","Looked at the wrong number. The biggest number (8) is the most.","Added instead of taking away, or subtracted the wrong way round. “How many more” means subtract.","Added only two of the three numbers, or made an adding slip (6 + 8 = 14, then + 3).","Did not compare the tally counts. 7 marks is more than 3 marks.","Mixed up the number of sides (3, 4, 6), or did not know that a right angle is a square corner."];
+const praise=["🎉 Great job!","🌟 Super!","👏 Well done!","🦄 Amazing!","🚀 Fantastic!"];
+let me={},qi=0,sc=0,ans=[],voice=false;
+const isOk=(q,v)=>q.t=="fb"?q.acc.includes(String(v).trim().toLowerCase()):v===q.a;
+const ansText=(q,v)=>q.t=="tf"?(v===1?"True":v===0?"False":"(no answer)"):q.t=="mc"?(q.o[v]||"(no answer)"):(String(v).trim()||"(left blank)");
+const rightText=q=>q.t=="tf"?(q.a?"True":"False"):q.t=="mc"?q.o[q.a]:q.a;
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const chk=s=>{let h=7;for(const c of s)h=(h*31+c.charCodeAt(0))>>>0;return h.toString(36).toUpperCase().padStart(7,"0")};
+function boom(n=26){for(let i=0;i<n;i++){const d=document.createElement("div");d.className="conf";d.textContent=["⭐","🎉","🎈","✨","🌟"][i%5];d.style.left=Math.random()*95+"vw";d.style.animationDelay=Math.random()*.5+"s";document.body.appendChild(d);setTimeout(()=>d.remove(),2400)}}
+const show=id=>{["study","review","start","quiz","done","parent"].forEach(x=>$("#"+x).hidden=x!=id);const nid=["quiz","done"].includes(id)?"start":id;document.querySelectorAll("#nv button").forEach(b=>b.classList.toggle("on",b.dataset.s==nid));if("speechSynthesis" in window)speechSynthesis.cancel();scrollTo(0,0)};
+function say(t){if(!("speechSynthesis" in window))return;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.rate=.85;speechSynthesis.speak(u)}
+$("#go").onclick=()=>{const n=$("#nm").value.trim(),e=$("#em").value.trim();
+ if(n.length<2)return $("#serr").textContent="Please write your name 😊";
+ if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(e))return $("#serr").textContent="Please write a real email, like name@example.com 📧";
+ me={n,e};qi=0;sc=0;ans=[];$("#st").textContent="⭐ 0";$("#serr").textContent="";ask()};
+$("#pd").onclick=()=>show("parent");$("#back").onclick=()=>show("start");
+$("#again").onclick=()=>show("start");
+function ask(){show("quiz");const T=$("#quiz"),N=Q.length+1;
+ if(qi==Q.length){T.innerHTML=`<div class="card"><div class="meter"><i style="width:${qi/N*100}%"></i></div><div class="small">Bonus question (optional)</div><div class="qt">✏️ Write one sentence about a chart, a tally or a shape you like.</div><textarea id="sen" maxlength="120" placeholder="I like..."></textarea><button class="btn" id="fin">🏁 Finish</button></div>`;
+  $("#fin").onclick=()=>finish($("#sen").value.trim());return}
+ const q=Q[qi];let inp="";
+ if(q.t=="tf")inp=`<div class="opts"><button class="opt" data-v="1">✅ True</button><button class="opt" data-v="0">❌ False</button></div>`;
+ else if(q.t=="mc")inp=`<div class="opts">${q.o.map((o,i)=>`<button class="opt" data-v="${i}">${o}</button>`).join("")}</div>`;
+ else inp=`<input id="fi" aria-label="Your answer" autocomplete="off"><button class="btn" id="chk">✔ Check</button>`;
+ T.innerHTML=`<div class="card"><div class="meter"><i style="width:${qi/N*100}%"></i></div><div style="display:flex;justify-content:space-between;align-items:center"><span class="small">Question ${qi+1} of ${Q.length}</span><button class="say" id="rd">🔊 Read aloud</button></div><div class="qt">${q.q}</div>${q.v?`<div class="vis">${q.v}</div>`:""}${inp}<div id="fb"></div></div>`;
+ $("#rd").onclick=()=>say(q.q.replace(/_+/g,"blank")+" "+(q.t=="mc"?q.o.join(". ").replace(/[^\w .]/g,""):""));
+ T.querySelectorAll(".opt").forEach(b=>b.onclick=()=>reply(+b.dataset.v,b));
+ if(q.t=="fb")$("#chk").onclick=()=>{const v=$("#fi").value.trim();if(v)reply(v)}}
+function reply(v,b){const q=Q[qi],ok=isOk(q,v);ans.push(v);
+ document.querySelectorAll(".opt").forEach(x=>{x.disabled=true;if(q.t!="fb"){const i=+x.dataset.v;if(i===q.a)x.classList.add("right")}});
+ if(b&&!ok)b.classList.add("wrong");
+ if($("#fi")){$("#fi").disabled=true;$("#chk").remove()}
+ if(ok){sc++;$("#st").textContent="⭐ "+sc;boom()}
+ $("#fb").innerHTML=`<div class="fb ${ok?"good":"bad"}" role="status"><b>${ok?praise[qi%5]+" +1 ⭐":"😊 Good try! The answer is: "+esc(rightText(q))}</b><br>${q.why}</div><button class="btn" id="nx">${qi==Q.length-1?"Next ➡":"Next ➡"}</button>`;
+ $("#nx").onclick=()=>{qi++;ask()}}
+function finish(sen){const p={v:1,n:me.n,e:me.e,t:new Date().toISOString(),a:ans,s:sen.slice(0,120)};
+ const b=btoa(unescape(encodeURIComponent(JSON.stringify(p)))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");
+ $("#code").value="U4-"+b+"."+chk(b);
+ const L=Q.length,pc=sc/L;$("#tr").textContent=pc>=.9?"🏆":pc>=.7?"🥇":pc>=.5?"🥈":"🌈";
+ $("#sc").textContent=`${me.n}, you scored ${sc} out of ${L}!`;
+ $("#sst").textContent="⭐".repeat(Math.max(1,Math.round(pc*5)))+"☆".repeat(5-Math.max(1,Math.round(pc*5)));
+ $("#bdg").textContent=pc>=.9?"🏅 Badge: Chart Champion!":pc>=.7?"🏅 Badge: Tally Star!":"🏅 Badge: Brave Learner!";
+ show("done");boom(40)}
+$("#cp").onclick=async()=>{const c=$("#code");try{await navigator.clipboard.writeText(c.value)}catch(e){c.select();try{document.execCommand("copy")}catch(_){}}$("#cp").textContent="✅ Copied!";setTimeout(()=>$("#cp").textContent="📋 Copy Code",2000)};
+/* PARENTS */
+$("#open").onclick=()=>{const r=$("#report"),er=$("#perr");r.innerHTML="";er.textContent="";
+ let raw=$("#pcode").value.replace(/\s+/g,"");
+ const m=raw.match(/^U4-([A-Za-z0-9_-]+)\.([A-Z0-9]{7})$/);
+ if(!m)return er.textContent="This code does not look right. It should start with U4- and end with 7 letters or numbers. Please copy the whole code again.";
+ if(chk(m[1])!==m[2].toUpperCase())return er.textContent="Checksum error: one or more characters were copied wrongly. Please copy the code again.";
+ let p;try{let s=m[1].replace(/-/g,"+").replace(/_/g,"/");while(s.length%4)s+="=";p=JSON.parse(decodeURIComponent(escape(atob(s))))}catch(x){return er.textContent="The code could not be read. Please copy it again."}
+ if(!Array.isArray(p.a)||p.a.length!==Q.length)return er.textContent="This code does not match this quiz.";
+ const res=Q.map((q,i)=>isOk(q,p.a[i])),score=res.filter(Boolean).length,L=Q.length;
+ const tp=TOP.map((n,k)=>{const ix=Q.map((q,i)=>q.tp==k?i:-1).filter(i=>i>=0);return{n,k,c:ix.filter(i=>res[i]).length,t:ix.length}});
+ const weak=tp.filter(x=>x.c/x.t<.7);
+ const when=new Date(p.t);
+ let h=`<div class="card"><h2>Hello, parent of ${esc(p.n)} 👋</h2><p class="small">${esc(p.e)} · ${isNaN(when)?"":when.toLocaleString()}</p><div class="sc">${score} / ${L} correct</div><p class="sc" style="font-size:20px">${score==L?"🏆 Perfect! No mistakes.":(L-score)+" mistake"+(L-score>1?"s":"")+" to look at"}</p></div>`;
+ h+=`<div class="card"><h2>📈 Strong and weak points</h2>${tp.map(x=>`<div class="row"><b>${x.n}</b><div class="meter"><i style="width:${x.c/x.t*100}%;background:${x.c/x.t<.7?"var(--coral)":"var(--mint)"}"></i></div><span>${x.c}/${x.t}</span></div>`).join("")}`;
+ h+=weak.length?`<p><span class="tagw">Needs practice</span> ${weak.map(x=>"<b>"+x.n+"</b>").join(", ")}</p>${weak.map(x=>`<p>🏠 <b>${x.n}:</b> ${TIP[x.k]}</p>`).join("")}`:`<p><span class="tagw tagg">Strong</span> Great understanding in every topic!</p>`;
+ h+=`</div>`;
+ const bad=res.map((r,i)=>r?-1:i).filter(i=>i>=0);
+ if(bad.length){h+=`<h2 style="margin:18px 4px 8px">❌ Mistakes in detail</h2>`+bad.map(i=>{const q=Q[i];return`<div class="card mist"><div class="small">Question ${i+1} · ${TOP[q.tp]}</div><p><b>${q.q}</b></p>${q.v?`<div class="vis">${q.v}</div>`:""}<p>Your child answered: <span class="ans w">${esc(ansText(q,p.a[i]))}</span></p><p>Correct answer: <span class="ans r">${esc(rightText(q))}</span></p><p>🔍 <b>Why this mistake happened:</b> ${CAUSE[i]}</p><p>💡 <b>Why the answer is right:</b> ${q.why}</p><p>🏠 <b>How to help:</b> ${q.help}</p></div>`}).join("")}
+ if(p.s)h+=`<div class="card"><b>✏️ Bonus sentence from ${esc(p.n)}:</b><p>${esc(p.s)}</p></div>`;
+ r.innerHTML=h;r.scrollIntoView({behavior:"smooth"})};
+
+/* STUDY */
+const bars=`<svg viewBox="0 0 300 180" width="100%" style="max-width:340px" role="img" aria-label="Bar chart: Gold 6, Silver 8, Bronze 3"><g fill="#FFC93C" stroke="#E0A800" stroke-width="3"><rect x="25" y="56" width="60" height="84"/><rect x="120" y="28" width="60" height="112"/><rect x="215" y="98" width="60" height="42"/></g><line x1="10" y1="140" x2="290" y2="140" stroke="currentColor" stroke-width="3"/><g font-size="22" font-weight="700" fill="currentColor" text-anchor="middle" font-family="Fredoka,Trebuchet MS,sans-serif"><text x="55" y="48">6</text><text x="150" y="20">8</text><text x="245" y="90">3</text></g><g font-size="19" font-weight="600" fill="currentColor" text-anchor="middle" font-family="Fredoka,Trebuchet MS,sans-serif"><text x="55" y="166">Gold</text><text x="150" y="166">Silver</text><text x="245" y="166">Bronze</text></g></svg>`;
+const carr=`<table class="c"><tr><th></th><th>Can fly</th><th>Cannot fly</th></tr><tr><th>Wild</th><td>🦜</td><td>🐯</td></tr><tr><th>Not wild</th><td>🐔</td><td>🐑</td></tr></table>`;
+const sqs=`<svg viewBox="0 0 300 120" width="100%" style="max-width:340px" role="img" aria-label="A square, a triangle and a hexagon"><g fill="#FF5C6C"><rect x="20" y="10" width="60" height="60"/><polygon points="115,70 150,10 185,70"/><polygon points="220,10 260,10 280,40 260,70 220,70 200,40"/></g><g font-size="20" font-weight="600" fill="currentColor" text-anchor="middle" font-family="Fredoka,Trebuchet MS,sans-serif"><text x="50" y="104">square</text><text x="150" y="104">triangle</text><text x="240" y="104">hexagon</text></g></svg>`;
+const LES=[
+{e:"🔵",t:"Venn diagrams",p:["Data means facts and information that we collect.","A Venn diagram sorts data using circles that overlap.","Each circle has a label, like “Can fly” and “Lives in the wild”.","Things that fit BOTH labels go in the middle, where the circles overlap.","Example: a parrot can fly and lives in the wild, so it goes in the middle."],v:venn2(`<g font-size="34" text-anchor="middle"><text x="180" y="140">🦜</text><text x="100" y="140">🐔</text><text x="262" y="140">🐯</text></g>`)},
+{e:"🟦",t:"Carroll diagrams",p:["A Carroll diagram sorts data into a grid of boxes, like a table.","The rows and columns have labels, like “Can fly” and “Cannot fly”.","A tiger lives in the wild and cannot fly, so it goes in that box.","A Carroll diagram has no overlapping circles. Remember: Carroll means boxes."],v:carr},
+{e:"🏅",t:"Pictograms",p:["A pictogram uses pictures to show data.","Always read the key first! If 🏅 = 2, then each picture means 2.","Half a picture means half the number. Half of 2 is 1.","Example: 3 medals is 2 + 2 + 2 = 6."],v:`<div class="big">🏅🏅🏅</div><div>Key: 🏅 = 2</div>`},
+{e:"📊",t:"Bar charts",p:["A bar chart uses bars to show numbers.","The taller the bar, the bigger the number.","Read the names under the bars and the numbers up the side.","Example: the silver bar is the tallest, so silver is the most."],v:bars},
+{e:"✍️",t:"Tally charts",p:["A tally mark is a small line that we draw to count.","Draw 4 lines, then one line across them to make 5.","Count in 5s: 5, 10, 15. Then add the extra lines.","Example: 7 is one group of 5 plus 2 more marks.","The most popular has the biggest number. The least popular has the smallest."],v:`<div>${tally(7)}</div>`},
+{e:"➕",t:"Chart questions",p:["How many MORE? Take away (subtract): 6 − 3 = 3.","How many altogether? Add up: 6 + 8 + 3 = 17.","Most means the biggest number. Least means the smallest number.","Always read the labels and the key first."],v:bars},
+{e:"🔷",t:"Sorting 2D shapes",p:["We can sort 2D shapes in a Carroll diagram too.","Count the sides. Look for right angles (square corners).","A square has 4 sides and 4 right angles.","A triangle has 3 sides. A hexagon has 6 sides.","Has 4 sides AND a right angle? A square goes in that box."],v:sqs}];
+let li=0;
+function lesson(){const l=LES[li],S=$("#study");
+ S.innerHTML=`<div class="card les"><div class="meter"><i style="width:${(li+1)/LES.length*100}%"></i></div><div class="small">Lesson ${li+1} of ${LES.length}</div><h2>${l.e} ${l.t}</h2><div class="vis">${l.v}</div><button class="say" id="ra">🔊 Read the whole lesson</button> <span class="small">Tap any line to hear it.</span><ul>${l.p.map((x,i)=>`<li data-i="${i}">👉 ${x}</li>`).join("")}</ul><div class="two">${li?'<button class="btn ghost" id="pv">⬅ Back</button>':""}<button class="btn" id="nx2">${li==LES.length-1?"Go to Review 🔁":"Next lesson ➡"}</button></div></div>`;
+ const ls=[...S.querySelectorAll("li")];
+ ls.forEach(x=>x.onclick=()=>{ls.forEach(y=>y.classList.remove("hl"));x.classList.add("hl");say(x.textContent.replace("👉",""))});
+ $("#ra").onclick=()=>say(l.t+". "+l.p.join(" ").replace(/🏅/g,"medal").replace(/[−]/g," minus ").replace(/\+/g," plus ").replace(/=/g," equals "));
+ $("#nx2").onclick=()=>{if(li==LES.length-1){show("review");rev(-1)}else{li++;lesson();scrollTo(0,0)}};
+ if($("#pv"))$("#pv").onclick=()=>{li--;lesson();scrollTo(0,0)}}
+lesson();
+/* REVIEW */
+function rev(f){$("#rc").innerHTML=["All",...TOP].map((n,i)=>`<button class="chip ${i-1==f?"on":""}" data-f="${i-1}">${n}</button>`).join("");
+ $("#rl").innerHTML=Q.map((q,i)=>q.tp==f||f<0?`<div class="card"><div class="small">${TOP[q.tp]}</div><div class="qt">${q.q}</div>${q.v?`<div class="vis">${q.v}</div>`:""}${q.o?`<div class="small">Choices: ${q.o.join(" · ")}</div>`:""}<button class="say" data-r="${i}">🔊 Read aloud</button><button class="btn alt" data-a="${i}">👀 Show the answer</button><div id="rs${i}"></div></div>`:"").join("")}
+$("#review").onclick=e=>{const b=e.target.closest("button");if(!b)return;
+ if(b.dataset.f!==undefined)return rev(+b.dataset.f);
+ if(b.dataset.r!==undefined){const q=Q[b.dataset.r];return say(q.q.replace(/_+/g,"blank")+" "+(q.o?q.o.join(". ").replace(/[^\w .]/g,""):""))}
+ if(b.dataset.a!==undefined){const q=Q[b.dataset.a];$("#rs"+b.dataset.a).innerHTML=`<div class="fb good"><b>✅ Answer: ${esc(rightText(q))}</b><br>${q.why}</div>`;b.hidden=true;star1()}};
+function star1(){}
+rev(-1);
+document.querySelectorAll("#nv button").forEach(b=>b.onclick=()=>show(b.dataset.s));
+</script>
+</body>
+</html>
